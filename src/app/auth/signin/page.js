@@ -203,7 +203,7 @@ export default function SignInPage() {
                     transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: 0.8 }}
                 >
                     <p className="text-sm text-slate-600">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <a
                             href="/auth/signup"
                             className="font-semibold text-slate-900 hover:text-slate-700 transition-colors duration-200"
