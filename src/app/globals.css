@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFFFFF;
+  --foreground: #000000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Prevent horizontal swipe navigation globally */
+html,
+body {
+  overscroll-behavior-x: none;
+}
+
+/* Complete overscroll prevention */
+html,
+body {
+  overscroll-behavior: none;
+}
+
+/* PWA-specific prevention */
+@media (display-mode: standalone) {
+  html,
+  body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.swipe-area {
+  touch-action: pan-y;
+  /* Allow vertical scrolling, disable horizontal */
+}
+
+.navigation-zone {
+  touch-action: none;
+  /* Disable all browser gestures */
+}
+
+.custom-gesture-area {
+  touch-action: manipulation;
+  /* Allow pan and zoom, disable double-tap */
 }
