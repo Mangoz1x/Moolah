@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { CreditCard, Wifi, Radio, Trash2, Edit3, Settings, Eye, Copy } from 'lucide-react';
 import { BottomSheet } from '@/components/modals/BottomSheet';
 
 export const WalletCard = ({ card, index, totalCards, selectedIndex = null, onSelect, onDrag }) => {
     const [showActions, setShowActions] = useState(false);
+    const longPressTimer = useRef(null);
+    const isLongPressing = useRef(false);
+    
     const isSelected = selectedIndex === index;
     const isAboveSelected = selectedIndex !== null && index > selectedIndex;
     const isBelowSelected = selectedIndex !== null && index < selectedIndex;
@@ -36,13 +39,41 @@ export const WalletCard = ({ card, index, totalCards, selectedIndex = null, onSe
     };
 
     const handleCardTap = () => {
-        if (isSelected) {
-            // If already selected, show the action sheet
-            setShowActions(true);
-        } else {
-            // Otherwise, select the card
-            onSelect(index);
+        // Only handle tap if it's not a long press
+        if (!isLongPressing.current) {
+            if (!isSelected) {
+                // Select the card if not already selected
+                onSelect(index);
+            }
+            // If already selected, do nothing (long press will handle actions)
         }
+    };
+
+    const handleLongPressStart = () => {
+        // Only start long press timer if the card is selected
+        if (isSelected) {
+            isLongPressing.current = false;
+            longPressTimer.current = setTimeout(() => {
+                isLongPressing.current = true;
+                setShowActions(true);
+                
+                // Optional: Add haptic feedback for mobile devices
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            }, 500); // 500ms for long press
+        }
+    };
+
+    const handleLongPressEnd = () => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+        }
+        // Reset the long press flag after a short delay to prevent tap from firing
+        setTimeout(() => {
+            isLongPressing.current = false;
+        }, 100);
     };
 
     const handleEditCard = () => {
@@ -125,9 +156,14 @@ export const WalletCard = ({ card, index, totalCards, selectedIndex = null, onSe
                 }}
                 whileTap={{ scale: isSelected ? 0.99 : 0.96 }}
                 onTap={handleCardTap}
+                onPointerDown={handleLongPressStart}
+                onPointerUp={handleLongPressEnd}
+                onPointerLeave={handleLongPressEnd} // Cancel long press if pointer leaves
             >
                 <motion.div
-                    className={`relative h-48 mx-4 rounded-2xl bg-gradient-to-br ${card.gradient} p-6 text-white shadow-xl overflow-hidden`}
+                    className={`relative h-48 mx-4 rounded-2xl bg-gradient-to-br ${card.gradient} p-6 text-white shadow-xl overflow-hidden ${
+                        isSelected ? 'cursor-pointer' : 'cursor-pointer'
+                    }`}
                     whileHover={{ scale: isSelected ? 1.01 : 0.99 }}
                     transition={{ duration: 0.2 }}
                 >
@@ -165,6 +201,18 @@ export const WalletCard = ({ card, index, totalCards, selectedIndex = null, onSe
                             </motion.div>
                         </div>
                     </div>
+
+                    {/* Long press indicator for selected card */}
+                    {isSelected && (
+                        <motion.div
+                            className="absolute bottom-2 right-2 text-white/60 text-xs"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                        >
+                            Hold for options
+                        </motion.div>
+                    )}
                 </motion.div>
             </motion.div>
 

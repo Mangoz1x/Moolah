@@ -50,7 +50,7 @@ export const BottomSheet = ({
                     exit={{ opacity: 0 }}
                 >
                     <motion.div
-                        className="w-full bg-white rounded-t-3xl overflow-hidden"
+                        className="w-full bg-white max-w-xl mx-auto rounded-t-3xl overflow-hidden"
                         initial={{ y: '100%' }}
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
