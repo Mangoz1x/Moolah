@@ -7,7 +7,7 @@ export async function middleware(req) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     // 1️⃣ If user is authenticated and hitting any /auth/* page → send to /dashboard
-    if (token && pathname.startsWith('/auth')) {
+    if (token && (pathname.startsWith('/auth') || pathname === '/')) {
         const url = req.nextUrl.clone();
         url.pathname = '/dashboard';
         return NextResponse.redirect(url);
@@ -25,5 +25,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/auth/:path*', '/dashboard/:path*'],
+    matcher: ['/', '/auth/:path*', '/dashboard/:path*'],
 };
