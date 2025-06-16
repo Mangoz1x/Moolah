@@ -48,10 +48,6 @@ export const BottomSheet = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onClick={() => {
-                        animate(y, 0, { type: "spring", damping: 30, stiffness: 300 });
-                        onClose();
-                    }}
                 >
                     <motion.div
                         className="w-full bg-white rounded-t-3xl overflow-hidden"

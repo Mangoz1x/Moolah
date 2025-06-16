@@ -5,7 +5,7 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { Plus, CreditCard, Wifi, Radio, Trash2, Edit3 } from 'lucide-react';
 import PageTransition from '@/components/transitions/PageTransition';
 import { WalletCard } from './components/WalletCard';
-import { BottomSheet } from '@/components/modals/BottomSheet';
+import { AddCardModal } from './components/AddCardModal';
 
 // Sample card data (would come from your API)
 const sampleCards = [
@@ -54,34 +54,6 @@ const supportedCardTypes = [
     { id: 'loyalty', name: 'Loyalty Card', icon: '⭐', thumbnail: 'https://images.unsplash.com/photo-1607798748738-b15c40d33d57?w=100&h=60&fit=crop' },
     { id: 'gift', name: 'Gift Card', icon: '🎁', thumbnail: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=60&fit=crop' }
 ];
-
-const AddCardModal = ({ isOpen, onClose, supportedTypes }) => {
-    return (
-        <BottomSheet isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New Card</h2>
-
-            <div className="space-y-4">
-                {supportedTypes.map((type) => (
-                    <motion.button
-                        key={type.id}
-                        className="w-full p-4 bg-gray-50 rounded-2xl flex items-center space-x-4 text-left"
-                        whileTap={{ scale: 0.98 }}
-                        whileHover={{ backgroundColor: '#f3f4f6' }}
-                    >
-                        <div className="w-16 h-10 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg flex items-center justify-center text-xl">
-                            {type.icon}
-                        </div>
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900">{type.name}</h3>
-                            <p className="text-sm text-gray-600">Add a {type.name.toLowerCase()}</p>
-                        </div>
-                        <div className="text-gray-400">→</div>
-                    </motion.button>
-                ))}
-            </div>
-        </BottomSheet>
-    );
-};
 
 const WalletPWA = () => {
     const [cards, setCards] = useState(sampleCards);
