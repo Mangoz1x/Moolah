@@ -59,7 +59,7 @@ export function SideNavigation({ offset, onClose }) {
                 {offset > -SIDENAV_WIDTH && (
                     <motion.div
                         key="backdrop"
-                        className="lg:hidden fixed inset-0 bg-slate-600 z-40"
+                        className="lg:hidden fixed inset-0 bg-slate-600 z-[199]"
                         style={{ opacity: backdropOpacity }}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: backdropOpacity }}
@@ -71,7 +71,7 @@ export function SideNavigation({ offset, onClose }) {
 
             {/* Mobile Sliding Drawer */}
             <motion.div
-                className="lg:hidden fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-50 flex flex-col"
+                className="lg:hidden fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-[200] flex flex-col"
                 style={{ x: offset }}
                 animate={{ x: offset }}
                 transition={{ type: 'spring', stiffness: 350, damping: 30 }}

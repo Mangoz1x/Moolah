@@ -2,6 +2,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { SideNavigation } from './components/SideNav';
 import { MobileHeader } from './components/MobileHeader';
+import { customTouchStartEventsTable } from '@/vars/customTouchStartEvents';
 
 /** Drawer width in px */
 export const SIDENAV_WIDTH = 256;
@@ -19,6 +20,13 @@ function useSwipeGesture({ onSwipeRight, onSwipeLeft, onDrag, isDrawerOpen }) {
     const onTouchStart = useCallback(
         (e) => {
             const t = e.touches[0];
+
+            // This is necessary in the case that a touchable element resides in the listener area
+            const customTouchStartId = t?.target?.getAttribute("data-touch-start-id");
+            if (customTouchStartId && customTouchStartEventsTable[customTouchStartId]) {
+                customTouchStartEventsTable[customTouchStartId](t);
+                return;
+            }
 
             // If closed, only start if near left edge
             if (!isDrawerOpen && t.clientX > 50) return;

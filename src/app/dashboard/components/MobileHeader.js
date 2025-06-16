@@ -1,9 +1,13 @@
 export function MobileHeader({ onMenuClick }) {
     return (
-        <div className="lg:hidden sticky top-0 z-30 flex h-16 items-center gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm">
+        <div className="lg:hidden sticky top-0 z-30 flex h-16 items-center justify-between gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm">
             <button
-                onClick={onMenuClick}
-                className="p-2.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors duration-200"
+                data-touch-start-id="MobileHeaderOpenSideNavigation"
+                onClick={() => {
+                    console.log('hi');
+                    onMenuClick()
+                }}
+                className="ignore-touch-event-controller p-2.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors duration-200"
             >
                 ☰
             </button>
