@@ -14,7 +14,7 @@ export function SideNavigation({ offset, onClose }) {
     const items = [
         { href: '/dashboard', label: 'Dashboard', icon: '📊' },
         { href: '/dashboard/transactions', label: 'Transactions', icon: '💳' },
-        { href: '/dashboard/budgets', label: 'Budgets', icon: '🎯' },
+        { href: '/dashboard/wallet', label: 'Wallet', icon: '🎯' },
         { href: '/dashboard/analytics', label: 'Analytics', icon: '📈' },
         { href: '/dashboard/goals', label: 'Goals', icon: '🏆' },
         { href: '/dashboard/settings', label: 'Settings', icon: '⚙️' },
@@ -39,13 +39,14 @@ export function SideNavigation({ offset, onClose }) {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${active
-                                            ? 'bg-emerald-50 text-emerald-700 border-r-2 border-emerald-600'
+                                    className={`relative overflow-hidden group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${active
+                                            ? 'bg-purple-50 text-purple-700'
                                             : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                                         }`}
-                                >
+                                >   
                                     <span className="mr-3 text-lg">{item.icon}</span>
                                     {item.label}
+                                    {active && <div className="absolute right-0 h-full w-1 bg-purple-600"></div>}
                                 </Link>
                             );
                         })}
