@@ -2,16 +2,16 @@ import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
 
 export const BottomSheet = ({ 
     isOpen, 
-    onClose,
+    onClose = () => {},
     children
 }) => {
     const y = useMotionValue(0);
-    
+
     const handleDrag = (event, info) => {
         // Create progressive resistance - the more you drag, the harder it gets
         const dragDistance = info.offset.y;
         const maxDrag = 300;
-        const resistanceFactor = Math.min(dragDistance / maxDrag, 1);
+        const resistanceFactor = Math.min(dragDistance / maxDrag, 0.99);
         
         // Apply resistance curve - starts easy, gets progressively harder
         const resistance = dragDistance * (1 - resistanceFactor * 0.7);
@@ -23,20 +23,20 @@ export const BottomSheet = ({
         
         // Only consider it a real drag if moved more than 10px (prevents accidental taps)
         if (Math.abs(offset.y) < 10) {
-            animate(y, 0, { type: "spring", damping: 25, stiffness: 300 });
+            animate(y, 0, { type: "spring", damping: 30, stiffness: 300 });
             return;
         }
         
         // Thresholds for closing
-        const DISTANCE_THRESHOLD = 100; // 100px drag distance
-        const VELOCITY_THRESHOLD = 400;  // 400px/s velocity
+        const DISTANCE_THRESHOLD = 75; // 75px drag distance
+        const VELOCITY_THRESHOLD = 300;  // 300px/s velocity
         
         // If dragged down far enough or with enough momentum, close
         if (offset.y > DISTANCE_THRESHOLD || velocity.y > VELOCITY_THRESHOLD) {
             onClose();
         } else {
             // Spring back to original position with smooth animation
-            animate(y, 0, { type: "spring", damping: 25, stiffness: 300 });
+            animate(y, 0, { type: "spring", damping: 30, stiffness: 300 });
         }
     };
 
@@ -48,13 +48,17 @@ export const BottomSheet = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    onClick={() => {
+                        animate(y, 0, { type: "spring", damping: 30, stiffness: 300 });
+                        onClose();
+                    }}
                 >
                     <motion.div
                         className="w-full bg-white rounded-t-3xl overflow-hidden"
                         initial={{ y: '100%' }}
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
-                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
                         drag="y"
                         onDrag={handleDrag}
                         onDragEnd={handleDragEnd}
