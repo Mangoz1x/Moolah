@@ -139,7 +139,9 @@ export const WalletCard = ({ card, index, totalCards, selectedIndex = null, onSe
                 style={{ zIndex: isSelected ? totalCards + 1 : totalCards + index }}
                 initial={false}
                 animate={{
-                    y: getCardOffset(),
+                    // Temporary solution to prevent jumping when clicking and dragging and stuff
+                    transform: `translateY(${getCardOffset()}px)`,
+                    // y: getCardOffset(),
                     scale: isSelected ? 1 : 0.96
                 }}
                 transition={{
