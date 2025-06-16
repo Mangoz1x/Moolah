@@ -47,30 +47,19 @@ const sampleCards = [
     }
 ];
 
-// Sample supported card types (would come from api/v1/cards/types)
-const supportedCardTypes = [
-    { id: 'credit', name: 'Credit Card', icon: '💳', thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=100&h=60&fit=crop' },
-    { id: 'debit', name: 'Debit Card', icon: '🏦', thumbnail: 'https://images.unsplash.com/photo-1551598045-3642d7b5a1b0?w=100&h=60&fit=crop' },
-    { id: 'loyalty', name: 'Loyalty Card', icon: '⭐', thumbnail: 'https://images.unsplash.com/photo-1607798748738-b15c40d33d57?w=100&h=60&fit=crop' },
-    { id: 'gift', name: 'Gift Card', icon: '🎁', thumbnail: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=60&fit=crop' }
-];
-
 const WalletPWA = () => {
     const [cards, setCards] = useState(sampleCards);
     const [selectedCardIndex, setSelectedCardIndex] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [supportedTypes, setSupportedTypes] = useState(supportedCardTypes);
+    const [supportedTypes, setSupportedTypes] = useState([]);
 
     // Simulate API call for supported card types
     useEffect(() => {
         const fetchSupportedTypes = async () => {
             try {
-                // const response = await fetch('/api/v1/cards/types');
-                // const types = await response.json();
-                // setSupportedTypes(types);
-
-                // Using sample data for now
-                setSupportedTypes(supportedCardTypes);
+                const response = await fetch('/api/v1/cards/types', { method: "POST" });
+                const types = await response.json();
+                setSupportedTypes(types);
             } catch (error) {
                 console.error('Failed to fetch supported card types:', error);
             }
